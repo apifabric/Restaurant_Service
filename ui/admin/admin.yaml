@@ -1,0 +1,376 @@
+about:
+  date: October 14, 2024 14:13:23
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 12
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Delivery:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: delivery_status
+      required: true
+    - name: estimated_time
+    - name: driver_id
+      required: true
+    description: Manages delivery logistics, driver assignments, and tracking.
+    info_list: Manages delivery logistics, driver assignments, and tracking.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Delivery
+    user_key: id
+  Driver:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: phone_number
+    - name: id
+    description: Manages driver information and assignments for deliveries.
+    info_list: Manages driver information and assignments for deliveries.
+    type: Driver
+    user_key: name
+  MenuItem:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: restaurant_id
+      required: true
+    - name: description
+    - name: price
+      required: true
+    - name: id
+    description: Manages menu items, pricing, and availability for each restaurant.
+    info_list: Manages menu items, pricing, and availability for each restaurant.
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    type: MenuItem
+    user_key: name
+  Notification:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: restaurant_id
+    - name: user_id
+    - name: message
+      required: true
+    - name: date_sent
+      required: true
+    description: Sends notifications to users and restaurants about order status,
+      promotions, and updates.
+    info_list: Sends notifications to users and restaurants about order status, promotions,
+      and updates.
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Notification
+    user_key: id
+  Order:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: restaurant_id
+      required: true
+    - name: user_id
+      required: true
+    - name: status
+      required: true
+    - name: date_ordered
+      required: true
+    description: Handles order creation, tracking, and history.
+    info_list: Handles order creation, tracking, and history.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: DeliveryList
+      resource: Delivery
+    - direction: tomany
+      fks:
+      - order_id
+      name: PaymentList
+      resource: Payment
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Order
+    user_key: id
+  Payment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: amount
+      required: true
+    - name: status
+      required: true
+    - name: date_processed
+      required: true
+    description: Manages payment processing, transaction history, and refunds.
+    info_list: Manages payment processing, transaction history, and refunds.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Payment
+    user_key: id
+  Promo:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: restaurant_id
+      required: true
+    - name: discount_percent
+      required: true
+    - name: start_date
+      required: true
+    - name: end_date
+      required: true
+    - name: id
+    description: Manages promotional campaigns and discounts for restaurants.
+    info_list: Manages promotional campaigns and discounts for restaurants.
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    type: Promo
+    user_key: description
+  Restaurant:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: address
+      required: true
+    - name: phone_number
+    - name: id
+    description: Manages restaurant listings, details, and availability.
+    info_list: Manages restaurant listings, details, and availability.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: MenuItemList
+      resource: MenuItem
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: NotificationList
+      resource: Notification
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: PromoList
+      resource: Promo
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: RestaurantScheduleList
+      resource: RestaurantSchedule
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: ReviewList
+      resource: Review
+    type: Restaurant
+    user_key: name
+  RestaurantSchedule:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: restaurant_id
+      required: true
+    - name: day_of_week
+      required: true
+    - name: open_time
+      required: true
+    - name: close_time
+      required: true
+    description: Stores operational hours and special schedules for restaurants.
+    info_list: Stores operational hours and special schedules for restaurants.
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    type: RestaurantSchedule
+    user_key: id
+  Review:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: restaurant_id
+      required: true
+    - name: user_id
+      required: true
+    - name: rating
+      required: true
+    - name: comment
+    - name: date_posted
+      required: true
+    description: Handles user reviews and ratings for restaurants and delivery experiences.
+    info_list: Handles user reviews and ratings for restaurants and delivery experiences.
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Review
+    user_key: id
+  User:
+    attributes:
+    - label: ' username*'
+      name: username
+      required: true
+      search: true
+      sort: true
+    - name: email
+      required: true
+    - name: password_hash
+      required: true
+    - name: preferences
+    - name: id
+    description: Handles user authentication, profile management, and user preferences.
+    info_list: Handles user authentication, profile management, and user preferences.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - user_id
+      name: NotificationList
+      resource: Notification
+    - direction: tomany
+      fks:
+      - user_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - user_id
+      name: ReviewList
+      resource: Review
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserPreferenceList
+      resource: UserPreference
+    type: User
+    user_key: username
+  UserPreference:
+    attributes:
+    - label: ' preference_name*'
+      name: preference_name
+      required: true
+      search: true
+      sort: true
+    - name: user_id
+      required: true
+    - name: preference_value
+    - name: id
+    description: Stores user preferences related to notifications and privacy settings.
+    info_list: Stores user preferences related to notifications and privacy settings.
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: UserPreference
+    user_key: preference_name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

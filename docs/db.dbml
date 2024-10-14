@@ -1,0 +1,112 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+
+Table Delivery {
+    id INTEGER [primary key]
+    order_id INTEGER 
+    driver_id INTEGER 
+    delivery_status VARCHAR 
+    estimated_time DATETIME 
+    }
+
+Table Order {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    restaurant_id INTEGER 
+    date_ordered DATETIME 
+    status VARCHAR 
+    }
+
+Table Driver {
+    id INTEGER [primary key]
+    name VARCHAR 
+    phone_number VARCHAR 
+    }
+
+Table MenuItem {
+    id INTEGER [primary key]
+    restaurant_id INTEGER 
+    name VARCHAR 
+    description VARCHAR 
+    price FLOAT 
+    }
+
+Table Restaurant {
+    id INTEGER [primary key]
+    name VARCHAR 
+    address VARCHAR 
+    phone_number VARCHAR 
+    }
+
+Table Notification {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    restaurant_id INTEGER 
+    message VARCHAR 
+    date_sent DATETIME 
+    }
+
+Table User {
+    id INTEGER [primary key]
+    username VARCHAR 
+    email VARCHAR 
+    password_hash VARCHAR 
+    preferences VARCHAR 
+    }
+
+Table Payment {
+    id INTEGER [primary key]
+    order_id INTEGER 
+    amount FLOAT 
+    date_processed DATETIME 
+    status VARCHAR 
+    }
+
+Table Promo {
+    id INTEGER [primary key]
+    restaurant_id INTEGER 
+    description VARCHAR 
+    discount_percent FLOAT 
+    start_date DATETIME 
+    end_date DATETIME 
+    }
+
+Table RestaurantSchedule {
+    id INTEGER [primary key]
+    restaurant_id INTEGER 
+    day_of_week VARCHAR 
+    open_time VARCHAR 
+    close_time VARCHAR 
+    }
+
+Table Review {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    restaurant_id INTEGER 
+    rating INTEGER 
+    comment VARCHAR 
+    date_posted DATETIME 
+    }
+
+Table UserPreference {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    preference_name VARCHAR 
+    preference_value VARCHAR 
+    }
+
+
+
+// Relationships
+    Ref: Delivery.(order_id) < Order.(id)
+    Ref: Order.(restaurant_id) < Restaurant.(id)
+    Ref: Order.(user_id) < User.(id)
+    Ref: MenuItem.(restaurant_id) < Restaurant.(id)
+    Ref: Notification.(restaurant_id) < Restaurant.(id)
+    Ref: Notification.(user_id) < User.(id)
+    Ref: Payment.(order_id) < Order.(id)
+    Ref: Promo.(restaurant_id) < Restaurant.(id)
+    Ref: RestaurantSchedule.(restaurant_id) < Restaurant.(id)
+    Ref: Review.(restaurant_id) < Restaurant.(id)
+    Ref: Review.(user_id) < User.(id)
+    Ref: UserPreference.(user_id) < User.(id)

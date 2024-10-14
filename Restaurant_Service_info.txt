@@ -1,0 +1,8 @@
+User Service: Handles user authentication, profile management, and user preferences.
+Restaurant Service: Manages restaurant listings, details, and availability.
+Menu Service: Manages menu items, pricing, and availability for each restaurant.
+Order Service: Handles order creation, tracking, and history.
+Payment Service: Manages payment processing, transaction history, and refunds.
+Notification Service: Sends notifications to users and restaurants about order status, promotions, and updates.
+Delivery Service: Manages delivery logistics, driver assignments, and tracking.
+Review Service: Handles user reviews and ratings for restaurants and delivery experiences.

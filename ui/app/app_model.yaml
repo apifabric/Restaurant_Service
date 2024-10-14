@@ -1,0 +1,570 @@
+about:
+  date: October 14, 2024 14:13:23
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Delivery:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: order_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: delivery_status
+      required: true
+      template: text
+      type: VARCHAR
+    - name: estimated_time
+      template: date
+      type: DATETIME
+    - name: driver_id
+      required: true
+      template: integer
+      type: INTEGER
+    description: Manages delivery logistics, driver assignments, and tracking.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Manages delivery logistics, driver assignments, and tracking.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Delivery
+  Driver:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: phone_number
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Manages driver information and assignments for deliveries.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Manages driver information and assignments for deliveries.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: Driver
+  MenuItem:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: restaurant_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: price
+      required: true
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Manages menu items, pricing, and availability for each restaurant.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Manages menu items, pricing, and availability for each restaurant.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    type: MenuItem
+  Notification:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: restaurant_id
+      template: integer
+      type: INTEGER
+    - name: user_id
+      template: integer
+      type: INTEGER
+    - name: message
+      required: true
+      template: text
+      type: VARCHAR
+    - name: date_sent
+      required: true
+      template: date
+      type: DATETIME
+    description: Sends notifications to users and restaurants about order status,
+      promotions, and updates.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Sends notifications to users and restaurants about order status, promotions,
+      and updates.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Notification
+  Order:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: restaurant_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: status
+      required: true
+      template: text
+      type: VARCHAR
+    - name: date_ordered
+      required: true
+      template: date
+      type: DATETIME
+    description: Handles order creation, tracking, and history.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Handles order creation, tracking, and history.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: DeliveryList
+      resource: Delivery
+    - direction: tomany
+      fks:
+      - order_id
+      name: PaymentList
+      resource: Payment
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Order
+  Payment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: order_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: amount
+      required: true
+      template: real
+      type: FLOAT
+    - name: status
+      required: true
+      template: text
+      type: VARCHAR
+    - name: date_processed
+      required: true
+      template: date
+      type: DATETIME
+    description: Manages payment processing, transaction history, and refunds.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Manages payment processing, transaction history, and refunds.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Payment
+  Promo:
+    columns:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: restaurant_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: discount_percent
+      required: true
+      template: real
+      type: FLOAT
+    - name: start_date
+      required: true
+      template: date
+      type: DATETIME
+    - name: end_date
+      required: true
+      template: date
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Manages promotional campaigns and discounts for restaurants.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Manages promotional campaigns and discounts for restaurants.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    type: Promo
+  Restaurant:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: address
+      required: true
+      template: text
+      type: VARCHAR
+    - name: phone_number
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Manages restaurant listings, details, and availability.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Manages restaurant listings, details, and availability.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: MenuItemList
+      resource: MenuItem
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: NotificationList
+      resource: Notification
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: PromoList
+      resource: Promo
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: RestaurantScheduleList
+      resource: RestaurantSchedule
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: ReviewList
+      resource: Review
+    type: Restaurant
+  RestaurantSchedule:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: restaurant_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: day_of_week
+      required: true
+      template: text
+      type: VARCHAR
+    - name: open_time
+      required: true
+      template: text
+      type: VARCHAR
+    - name: close_time
+      required: true
+      template: text
+      type: VARCHAR
+    description: Stores operational hours and special schedules for restaurants.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Stores operational hours and special schedules for restaurants.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    type: RestaurantSchedule
+  Review:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: restaurant_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: rating
+      required: true
+      template: integer
+      type: INTEGER
+    - name: comment
+      template: text
+      type: VARCHAR
+    - name: date_posted
+      required: true
+      template: date
+      type: DATETIME
+    description: Handles user reviews and ratings for restaurants and delivery experiences.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Handles user reviews and ratings for restaurants and delivery experiences.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: Review
+  User:
+    columns:
+    - label: ' username*'
+      name: username
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: email
+      required: true
+      template: text
+      type: VARCHAR
+    - name: password_hash
+      required: true
+      template: text
+      type: VARCHAR
+    - name: preferences
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Handles user authentication, profile management, and user preferences.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: username
+    home_template: home_template.html
+    info_list: Handles user authentication, profile management, and user preferences.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - user_id
+      name: NotificationList
+      resource: Notification
+    - direction: tomany
+      fks:
+      - user_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - user_id
+      name: ReviewList
+      resource: Review
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserPreferenceList
+      resource: UserPreference
+    type: User
+  UserPreference:
+    columns:
+    - label: ' preference_name*'
+      name: preference_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: preference_value
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores user preferences related to notifications and privacy settings.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: preference_name
+    home_template: home_template.html
+    info_list: Stores user preferences related to notifications and privacy settings.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    type: UserPreference
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false

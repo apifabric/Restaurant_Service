@@ -1,0 +1,44 @@
+<o-form-layout-manager attr="UserPreference" mode="tab" title="USERPREFERENCE">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="UserPreferenceTable" 
+            service="UserPreference" 
+            entity="UserPreference" 
+            title="USERPREFERENCE"
+            keys="id"
+            columns="preference_name;user_id;preference_value;id" 
+            header-actions="R;D"
+            visible-columns="preference_name;user_id;preference_value;id"  
+            sort-columns="preference_name" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #preference_name attr="preference_name" title=" preference_name*" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column attr="user_id" title="user_id">
+    <o-table-cell-renderer-service attr="user_id" 
+        service="User" entity="UserType" columns="id;username"
+        parent-keys="id:user_id"
+        value-column="username" keys="user_id"
+        visible-columns="username" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column #preference_value attr="preference_value" title="preference_value" editable="no" required="no" content-align="left"></o-table-column>
+            
+            <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>
